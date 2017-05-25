@@ -53,24 +53,24 @@ class BreadthFirstSearchTree:
 
 
 class Vertex:
-    def __init__(self, value):
-        self.__value = value
+    def __init__(self, key):
+        self.__key = key
         self.__color = 'white'
         self.__neighbours = {}
 
     def set_color(self, colour):
         self.__color = colour
 
-    def get_value(self):
-        return self.__value
+    def get_key(self):
+        return self.__key
 
     def get_color(self):
         return self.__color
 
     def add_neighbour(self, neighbour):
-        self.__neighbours[neighbour.get_value()] = [neighbour]
+        self.__neighbours[neighbour.get_key()] = [neighbour]
         for values in self.__neighbours.values():
-            print('{} has neighbours {}'.format(neighbour.get_value(), values[0].get_value()))
+            print('{} has neighbours {}'.format(neighbour.get_key(), values[0].get_key()))
 
     def get_neighbours(self):
         neighbour_list = []
@@ -82,6 +82,9 @@ class Vertex:
 class Graph:
     def __init__(self, graph_dictionary):
         self.vertex_dictionary = {}
+        self.__component_trees = []
+        self.components_dictionary = {}
+
         for key in graph_dictionary.keys():
             vertex = Vertex(key)
             self.vertex_dictionary[key] = vertex
@@ -101,6 +104,38 @@ class Graph:
     def bfs(self, vertex_key):
         source = self.vertex_dictionary[vertex_key]
         return self.__breadth_first_search(source)
+
+    def color_reset(self):
+        for vertex in self.vertex_dictionary.values():
+            vertex.set_color('white')
+
+    def create_subgraph_dict(self):
+        if not self.__component_trees:
+            self.compartmentalize()
+        component_trees = self.get_component_trees()
+        component_list_of_lists = []
+        for tree in component_trees:
+            tree_list = []
+            for branchpoint in tree:
+                tree_list += [branchpoint.get_vertex().get_key()]
+            component_list_of_lists += [tree_list]
+        counter = 0
+        for list in component_list_of_lists:
+            self.components_dictionary[counter] = list
+            counter += 1
+
+    def get_component_trees(self):
+        return self.__component_trees
+
+    def compartmentalize(self):
+        self.color_reset()
+        for vertex in self.vertex_dictionary.values():
+            if vertex.get_color() != 'black':
+                bfs_tree = self.__breadth_first_search(vertex)
+                self.__component_trees += [bfs_tree]
+
+
+
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
@@ -151,3 +186,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
 
     for bps in tree:
         print(bps.get_distance_to_source())
+
+    graph.create_subgraph_dict()
+    print(graph.components_dictionary)
+    print(graph.get_component_trees())
