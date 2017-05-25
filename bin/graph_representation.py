@@ -127,6 +127,9 @@ class Graph:
     def get_component_trees(self):
         return self.__component_trees
 
+    def get_component_dictionary(self):
+        return self.components_dictionary
+
     def compartmentalize(self):
         self.color_reset()
         for vertex in self.vertex_dictionary.values():
