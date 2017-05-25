@@ -45,6 +45,6 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
 
     p1.legend.location = "top_left"
     p1.xaxis.axis_label = 'x'
-    p1.yaxis.axis_label = 'Pr(x)'
+    p1.yaxis.axis_label = 'n.o. vertices'
 
     bp.show(p1)
