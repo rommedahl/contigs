@@ -4,7 +4,7 @@ import bokeh.plotting as bp
 
 
 #sys.argv is a list of arguments passed via the terminal to the script
-
+#sys.stdin takes input from standard in
 
 
 
@@ -24,6 +24,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
         for line in oft:
             line_list = line.split(' ')
             value = int(line_list[0])
+            print(value)
             if value < 20:
                 under_limit += 1
                 data_list += [int(line_list[0])]
@@ -36,9 +37,13 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     measured = np.array(data_list)
     print(measured)
 
-    hist, edges = np.histogram(measured, density=False, bins=100)
 
-    x = np.logspace(0, 4000, 1000)
+
+    hist, edges = np.histogram(measured, density=False, bins=100)
+    print(hist)
+    print(edges)
+
+    #x = np.logspace(0, 4000, 1000)
     p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:],
             fill_color="#036564", line_color="#033649")
 
