@@ -55,17 +55,29 @@ class BreadthFirstSearchTree:
 class Vertex:
     def __init__(self, value):
         self.__value = value
-        self.__colour = 'white'
+        self.__color = 'white'
         self.__neighbours = {}
 
     def set_color(self, colour):
-        self.__colour = colour
+        self.__color = colour
 
     def get_value(self):
         return self.__value
 
+    def get_color(self):
+        return self.__color
+
     def add_neighbour(self, neighbour):
         self.__neighbours[neighbour.get_value()] = [neighbour]
+        for values in self.__neighbours.values():
+            print('{} has neighbours {}'.format(neighbour.get_value(), values[0].get_value()))
+
+    def get_neighbours(self):
+        neighbour_list = []
+        for key in self.__neighbours.keys():
+            neighbour_list += [self.__neighbours[key][0]]
+        return neighbour_list
+
 
 class Graph:
     def __init__(self, graph_dictionary):
@@ -85,6 +97,10 @@ class Graph:
     def __yielder(self):
         for key in self.vertex_dictionary.keys():
             yield key
+
+    def bfs(self, vertex_key):
+        source = self.vertex_dictionary[vertex_key]
+        return self.__breadth_first_search(source)
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
@@ -112,6 +128,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as data:
         for i in range(10):
             data_line_list = data.readline().replace('\n', '').split('\t')
+            print(data_line_list)
             if data_line_list[0] not in graph_dictionary.keys():
                 graph_dictionary[data_line_list[0]] = {data_line_list[1]}
             else:
@@ -123,6 +140,14 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
 
 
     graph = Graph(graph_dictionary)
+    print(graph_dictionary)
 
     for key in graph:
         print('in graph', key)
+
+    for key in graph:
+        tree = graph.bfs(key)
+        break
+
+    for bps in tree:
+        print(bps.get_distance_to_source())
