@@ -44,5 +44,5 @@ class TestGraph:
         subgraph_dict = graph.get_component_dictionary()
         assert len(subgraph_dict) == 2
         for i, j in subgraph_dict.items():
-                assert ('v1' and 'v2' and 'v3') or ('v4') in j
+                assert ('v1' and 'v2' and 'v3' in j) ^ ('v4' in j)
 
