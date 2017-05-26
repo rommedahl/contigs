@@ -188,24 +188,6 @@ def line_list_to_dict(line_list, graph_dictionary):
         graph_dictionary[line_list[1]] |= {line_list[0]}
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-
-
-
-#    data_line_list = []
-#    graph_dictionary = {}
-
-#    with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as data:
-#        for i in range(10):
-#            data_line_list = data.readline().replace('\n', '').split('\t')
-#            print(data_line_list)
-#            if data_line_list[0] not in graph_dictionary.keys():
-#                graph_dictionary[data_line_list[0]] = {data_line_list[1]}
-#            else:
-#                graph_dictionary[data_line_list[0]] |= {data_line_list[1]}
-#            if data_line_list[1] not in graph_dictionary.keys():
-#                graph_dictionary[data_line_list[1]] = {data_line_list[0]}
-#            else:
-#                graph_dictionary[data_line_list[1]] |= {data_line_list[0]}
     with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
         graph_dictionary = graph_dictionary_creater(file, 10)
     graph = Graph(graph_dictionary)
