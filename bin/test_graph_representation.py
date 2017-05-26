@@ -2,6 +2,15 @@ from graph_representation import *
 import pytest
 
 
+def create_graph():
+    graph_dict = {}
+    graph_dict['v1'] = {'v2', 'v3'}
+    graph_dict['v2'] = {'v1'}
+    graph_dict['v3'] = {'v1'}
+    graph_dict['v4'] = {}
+    graph = Graph(graph_dict)
+    return graph
+
 class TestVertex:
     def test_add_neighbour(self):
         neighbour_list = []
@@ -15,15 +24,14 @@ class TestVertex:
             assert int(chr) in neighbour_list
 
 class TestGraph:
+
     def test_graph_constructor(self):
-            graph_dict = {}
-            graph_dict['v1'] = {'v2', 'v3'}
-            graph_dict['v2'] = {'v1'}
-            graph_dict['v3'] = {'v1'}
-            graph_dict['v4'] = {}
-            graph = Graph(graph_dict)
+        graph = create_graph()
         vertices = graph.vertex_dictionary
         assert 'v1' and 'v2' and 'v3' and 'v4' in vertices
+
+    def test_graph_compartmentalize(self):
+        graph = create_graph()
         graph.create_subgraph_dict()
         subgraph_dict = graph.get_component_dictionary()
         assert len(subgraph_dict) == 2
