@@ -16,9 +16,11 @@ def file_reader(file, limit=0):
         value = int(line_list[0])
         if limit and value < limit:
             under_limit += 1
-            data_list += [int(line_list[0])]
+            data_list += [value]
         elif limit and value >= limit:
             over_limit += 1
+        elif not limit:
+            data_list += [value]
     if limit:
         percentage_filtered = over_limit / (under_limit + over_limit)
         print('% filtered {}'.format(100*percentage_filtered))
