@@ -28,36 +28,17 @@ def file_reader(filename, limit=0):
 
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-
-    #print(sys.argv)
     p1 = bp.figure(title="Overlap frequencies",
                 background_fill_color="#E8DDCB")
-
-    # mu, sigma = 0, 0.5
-    # measured = np.random.normal(mu, sigma, 1000)
-
     if '-stdin' in sys.argv:
-        data_list = file_reader(sys.stdin, int(sys.argv[2]))
+        data_list = file_reader(sys.stdin, int(sys.argv[1]))
     else:
         data_list = file_reader(sys.argv[1], int(sys.argv[2]))
-
-
     measured = np.array(data_list)
-    #print(measured)
-
-
-
     hist, edges = np.histogram(measured, density=False, bins=100)
-    #print(hist)
-    #print(edges)
-
-    #x = np.logspace(0, 4000, 1000)
     p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:],
             fill_color="#036564", line_color="#033649")
-
-
     p1.legend.location = "top_left"
     p1.xaxis.axis_label = 'x'
     p1.yaxis.axis_label = 'n.o. vertices'
-
     bp.show(p1)
