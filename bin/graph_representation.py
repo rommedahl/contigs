@@ -141,6 +141,25 @@ class Graph:
                 bfs_tree = self.__breadth_first_search(vertex)
                 self.__component_trees += [bfs_tree]
 
+    def component_diameter(self, component_tree, k):
+        '''
+        finds the diameter of a bfs_tree, probabilistic with k tries
+        :param component_tree: bfs_tree
+        :param k: amount of times to seearch the tree
+        :return: diameter (and diameter path?)
+        '''
+        max_distance = 0
+        for i in range(k):
+            for branch_point in component_tree:
+                distance = branch_point.get_distance_to_source()
+                if distance > max_distance:
+                    max_distance = distance
+                    furthest_branch = branch_point
+            component_tree = self.__breadth_first_search(furthest_branch)
+        diameter = max_distance
+        return diameter
+
+
     @classmethod
     def __breadth_first_search(cls, source_vertex):
         """A breadth first search algorithm, returning a breadth_first_search_tree_object"""
