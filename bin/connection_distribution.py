@@ -30,7 +30,7 @@ def file_reader(filename, limit=0):
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
     p1 = bp.figure(title="Overlap frequencies",
                 background_fill_color="#E8DDCB")
-    if '-stdin' in sys.argv:
+    if sys.argv[-1] == '-stdin':
         data_list = file_reader(sys.stdin, int(sys.argv[1]))
     else:
         data_list = file_reader(sys.argv[1], int(sys.argv[2]))
