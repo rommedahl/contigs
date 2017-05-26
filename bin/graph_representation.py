@@ -69,8 +69,8 @@ class Vertex:
 
     def add_neighbour(self, neighbour):
         self.__neighbours[neighbour.get_key()] = [neighbour]
-        for values in self.__neighbours.values():
-            print('{} has neighbours {}'.format(neighbour.get_key(), values[0].get_key()))
+        #for values in self.__neighbours.values():
+        #    print('{} has neighbours {}'.format(neighbour.get_key(), values[0].get_key()))
 
     def get_neighbours(self):
         neighbour_list = []
@@ -136,9 +136,6 @@ class Graph:
             if vertex.get_color() != 'black':
                 bfs_tree = self.__breadth_first_search(vertex)
                 self.__component_trees += [bfs_tree]
-
-
-
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
