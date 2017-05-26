@@ -6,8 +6,10 @@ def create_graph():
     graph_dict = {}
     graph_dict['v1'] = {'v2', 'v3'}
     graph_dict['v2'] = {'v1'}
-    graph_dict['v3'] = {'v1'}
+    graph_dict['v3'] = {'v1', 'v5'}
     graph_dict['v4'] = {}
+    graph_dict['v5'] = {'v3', 'v6'}
+    graph_dict['v6'] = {'v5'}
     graph = Graph(graph_dict)
     return graph
 
@@ -46,3 +48,19 @@ class TestGraph:
         for i, j in subgraph_dict.items():
                 assert ('v1' and 'v2' and 'v3' in j) ^ ('v4' in j)
 
+    def test_component_diameter(self):
+        graph = create_graph()
+        graph.compartmentalize()
+        sub_trees = graph.get_component_trees()
+        t1 = sub_trees[0]
+        t2 = sub_trees[1]
+        t1_diameter, path = graph.component_diameter(t1, 5)
+        t2_diameter, x = graph.component_diameter(t2, 5)
+        assert t1_diameter == 4
+        assert t2_diameter == 0
+        assert 'v2' and 'v1' and 'v3' and 'v5' and 'v6' in path
+
+
+
+if __name__ == '__main__':
+    pass

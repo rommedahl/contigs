@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 
 
@@ -80,7 +79,7 @@ class Vertex:
 
 
 class Graph:
-    """Graph creates a graph object from a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key, 
+    """Graph creates a graph object from a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key,
     n2_key, ...} where key is an immutable value, unique for every vertex"""
     def __init__(self, graph_dictionary):
         self.vertex_dictionary = {}
@@ -111,7 +110,7 @@ class Graph:
             vertex.set_color('white')
 
     def create_subgraph_dict(self):
-        """Uses bfs to create a dictionary of the form 
+        """Uses bfs to create a dictionary of the form
         self.components_dictionary[index] = list_of_keys_in_same_component"""
         if not self.__component_trees:
             self.compartmentalize()
@@ -143,10 +142,10 @@ class Graph:
 
     def component_diameter(self, component_tree, k):
         '''
-        finds the diameter of a bfs_tree, probabilistic with k tries
+        finds the diameter of a bfs_tree, probabilistic with k tries NOT WORKING TO SPEC returns diameter-1
         :param component_tree: bfs_tree
         :param k: amount of times to search the tree
-        :return: diameter, diameter path = [key1, key2, ... ]
+        :return: diameter (and diameter path?)
         '''
         max_distance = 0
         furthest_branch = component_tree.get_source_branch_point()
@@ -190,7 +189,7 @@ class Graph:
 
 
 def graph_dictionary_creater(file, n_o_lines=None):
-    """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key, 
+    """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key,
     n2_key, ...} where key is an immutable value, unique for every vertex"""
     graph_dictionary = {}
     line_list = []
@@ -215,38 +214,23 @@ def line_list_to_dict(line_list, graph_dictionary):
     else:
         graph_dictionary[line_list[1]] |= {line_list[0]}
 
-if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-    argument_list = sys.argv
+def create_graph2():
+    graph_dict = {}
+    graph_dict['v1'] = {'v2', 'v3'}
+    graph_dict['v2'] = {'v1'}
+    graph_dict['v3'] = {'v1', 'v5'}
+    graph_dict['v4'] = {}
+    graph_dict['v5'] = {'v3', 'v6'}
+    graph_dict['v6'] = {'v5'}
+    graph = Graph(graph_dict)
+    return graph
 
-    if argument_list[-1] == '-stdin':
-        try:
-            with sys.stdin as file:
-                graph_dictionary = graph_dictionary_creater(file, int(argument_list[1]))
-        except:
-            raise #except: raise pattern raises whatever error occurs
-    elif len(argument_list) > 1:
-        try:
-            with open(argument_list[1]) as file:
-                graph_dictionary = graph_dictionary_creater(file, int(argument_list[2]))
-        except:
-            raise
-    else:
-        with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
-            graph_dictionary = graph_dictionary_creater(file, 10)
 
-    graph = Graph(graph_dictionary)
-    print(graph_dictionary)
 
-    for key in graph:
-        print('in graph', key)
 
-    for key in graph:
-        tree = graph.bfs(key)
-        break
-
-    for bps in tree:
-        print(bps.get_distance_to_source())
-
-    graph.create_subgraph_dict()
-    print(graph.components_dictionary)
-    print(graph.get_component_trees())
+if __name__ == '__main__':
+    graph = create_graph2()
+    graph.compartmentalize()
+    t1, t2 = graph.get_component_trees()
+    d, p = graph.component_diameter(t1, 5)
+    print(d, p)
