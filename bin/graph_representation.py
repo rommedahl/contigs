@@ -195,7 +195,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
             with sys.stdin as file:
                 graph_dictionary = graph_dictionary_creater(file, int(argument_list[1]))
         except:
-            raise
+            raise #except: raise pattern raises whatever error occurs
     elif len(argument_list) > 1:
         try:
             with open(argument_list[1]) as file:
