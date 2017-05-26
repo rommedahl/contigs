@@ -28,7 +28,7 @@ def file_reader(filename, limit=0):
 
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-    p1 = bp.figure(title="Overlap frequencies",
+    p1 = bp.figure(title="Lengths of contigs",
                 background_fill_color="#E8DDCB")
     if '-stdin' in sys.argv:
         data_list = file_reader(sys.stdin, int(sys.argv[1]))
