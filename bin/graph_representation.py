@@ -80,11 +80,12 @@ class Vertex:
 
 
 class Graph:
+    """Graph creates a graph object from a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key, 
+    n2_key, ...} where key is an immutable value, unique for every vertex"""
     def __init__(self, graph_dictionary):
         self.vertex_dictionary = {}
         self.__component_trees = []
         self.components_dictionary = {}
-
         for key in graph_dictionary.keys():
             vertex = Vertex(key)
             self.vertex_dictionary[key] = vertex
@@ -110,6 +111,8 @@ class Graph:
             vertex.set_color('white')
 
     def create_subgraph_dict(self):
+        """Uses bfs to create a dictionary of the form 
+        self.components_dictionary[index] = list_of_keys_in_same_component"""
         if not self.__component_trees:
             self.compartmentalize()
         component_trees = self.get_component_trees()
@@ -131,6 +134,7 @@ class Graph:
         return self.components_dictionary
 
     def compartmentalize(self):
+        """"Creates a list of breadth_first_search_tree_objects, one for each component of the graph object"""
         self.color_reset()
         for vertex in self.vertex_dictionary.values():
             if vertex.get_color() != 'black':
@@ -139,6 +143,7 @@ class Graph:
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
+        """A breadth first search algorithm, creating a breadth_first_search_tree_object"""
         source_vertex.set_color('gray')
         the_tree = BreadthFirstSearchTree(source_vertex)
         queue = []
@@ -154,6 +159,8 @@ class Graph:
                     queue += [neighbour_branch_point]
             vertex.set_color('black')
         return the_tree
+
+
 
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
