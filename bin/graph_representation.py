@@ -188,8 +188,24 @@ def line_list_to_dict(line_list, graph_dictionary):
         graph_dictionary[line_list[1]] |= {line_list[0]}
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-    with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
-        graph_dictionary = graph_dictionary_creater(file, 10)
+    argument_list = sys.argv
+
+    if argument_list[-1] == '-stdin':
+        try:
+            with sys.stdin as file:
+                graph_dictionary = graph_dictionary_creater(file, int(argument_list[1]))
+        except:
+            raise
+    elif len(argument_list) > 1:
+        try:
+            with open(argument_list[1]) as file:
+                graph_dictionary = graph_dictionary_creater(file, int(argument_list[2]))
+        except:
+            raise
+    else:
+        with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
+            graph_dictionary = graph_dictionary_creater(file, 10)
+
     graph = Graph(graph_dictionary)
     print(graph_dictionary)
 
