@@ -143,7 +143,7 @@ class Graph:
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
-        """A breadth first search algorithm, creating a breadth_first_search_tree_object"""
+        """A breadth first search algorithm, returning a breadth_first_search_tree_object"""
         source_vertex.set_color('gray')
         the_tree = BreadthFirstSearchTree(source_vertex)
         queue = []
@@ -161,26 +161,53 @@ class Graph:
         return the_tree
 
 
+def graph_dictionary_creater(file, n_o_lines=None):
+    """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key, 
+    n2_key, ...} where key is an immutable value, unique for every vertex"""
+    graph_dictionary = {}
+    line_list = []
+    if not n_o_lines:
+        for line in file:
+            line_list = file.readline().replace('\n', '').split('\t')
+            line_list_to_dict(line_list, graph_dictionary)
+    else:
+        for i in range(n_o_lines):
+            line_list = file.readline().replace('\n', '').split('\t')
+            line_list_to_dict(line_list, graph_dictionary)
+    return graph_dictionary
 
+def line_list_to_dict(line_list, graph_dictionary):
+    """Takes a line from the file split by ' ' and turned int a list and adds it to the graph dictionary"""
+    if line_list[0] not in graph_dictionary.keys():
+        graph_dictionary[line_list[0]] = {line_list[1]}
+    else:
+        graph_dictionary[line_list[0]] |= {line_list[1]}
+    if line_list[1] not in graph_dictionary.keys():
+        graph_dictionary[line_list[1]] = {line_list[0]}
+    else:
+        graph_dictionary[line_list[1]] |= {line_list[0]}
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-    data_line_list = []
-    graph_dictionary = {}
-
-    with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as data:
-        for i in range(10):
-            data_line_list = data.readline().replace('\n', '').split('\t')
-            print(data_line_list)
-            if data_line_list[0] not in graph_dictionary.keys():
-                graph_dictionary[data_line_list[0]] = {data_line_list[1]}
-            else:
-                graph_dictionary[data_line_list[0]] |= {data_line_list[1]}
-            if data_line_list[1] not in graph_dictionary.keys():
-                graph_dictionary[data_line_list[1]] = {data_line_list[0]}
-            else:
-                graph_dictionary[data_line_list[1]] |= {data_line_list[0]}
 
 
+
+#    data_line_list = []
+#    graph_dictionary = {}
+
+#    with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as data:
+#        for i in range(10):
+#            data_line_list = data.readline().replace('\n', '').split('\t')
+#            print(data_line_list)
+#            if data_line_list[0] not in graph_dictionary.keys():
+#                graph_dictionary[data_line_list[0]] = {data_line_list[1]}
+#            else:
+#                graph_dictionary[data_line_list[0]] |= {data_line_list[1]}
+#            if data_line_list[1] not in graph_dictionary.keys():
+#                graph_dictionary[data_line_list[1]] = {data_line_list[0]}
+#            else:
+#                graph_dictionary[data_line_list[1]] |= {data_line_list[0]}
+    with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
+        graph_dictionary = graph_dictionary_creater(file, 10)
     graph = Graph(graph_dictionary)
     print(graph_dictionary)
 
