@@ -15,4 +15,19 @@ class TestVertex:
             assert int(chr) in neighbour_list
 
 class TestGraph:
-    def test_
+    def test_graph_constructor(self):
+        graph_dict = {}
+        graph_dict['v1'] = {'v2', 'v3'}
+        graph_dict['v2'] = {'v1'}
+        graph_dict['v3'] = {'v1'}
+        graph_dict['v4'] = {}
+        graph = Graph(graph_dict)
+        vertices = graph.vertex_dictionary
+        assert 'v1' and 'v2' and 'v3' and 'v4' in vertices
+        graph.create_subgraph_dict()
+        subgraph_dict = graph.get_component_dictionary()
+        assert len(subgraph_dict) == 2
+        for i, j in subgraph_dict.items():
+                for v in j:
+                    assert type(v) == type('')
+
