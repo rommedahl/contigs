@@ -7,33 +7,33 @@ import bokeh.plotting as bp
 #sys.stdin takes input from standard in
 
 
-def file_reader(filename, limit=0):
+def file_reader(file, limit=0):
     under_limit = 0
     over_limit = 0
     data_list = []
-    with open(filename) as file:
-        for line in file:
-            line_list = line.split(' ')
-            value = int(line_list[0])
-            #print(value)
-            if limit and value < limit:
-                under_limit += 1
-                data_list += [int(line_list[0])]
-            elif limit and value >= limit:
-                over_limit += 1
+    for line in file:
+        line_list = line.split(' ')
+        value = int(line_list[0])
+        if limit and value < limit:
+            under_limit += 1
+            data_list += [int(line_list[0])]
+        elif limit and value >= limit:
+            over_limit += 1
     if limit:
         percentage_filtered = over_limit / (under_limit + over_limit)
-        print('% filtered {}'.format(percentage_filtered))
+        print('% filtered {}'.format(100*percentage_filtered))
     return data_list
 
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
     p1 = bp.figure(title="Lengths of contigs",
                 background_fill_color="#E8DDCB")
-    if '-stdin' in sys.argv:
-        data_list = file_reader(sys.stdin, int(sys.argv[1]))
+    if sys.argv[-1] == '-stdin':
+        with sys.stdin as file:
+            data_list = file_reader(file, int(sys.argv[1]))
     else:
-        data_list = file_reader(sys.argv[1], int(sys.argv[2]))
+        with open(sys.argv[1]) as file:
+            data_list = file_reader(file, int(sys.argv[2]))
     measured = np.array(data_list)
     hist, edges = np.histogram(measured, density=False, bins=100)
     p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:],
