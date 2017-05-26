@@ -55,7 +55,9 @@ class TestGraph:
         t1 = sub_trees[0]
         t2 = sub_trees[1]
         t1_diameter, path = graph.component_diameter(t1, 5)
+        t2_diameter, x = graph.component_diameter(t2, 5)
         assert t1_diameter == 4
+        assert t2_diameter == 0
         assert 'v2' and 'v1' and 'v3' and 'v5' and 'v6' in path
 
 
