@@ -24,13 +24,21 @@ class TestVertex:
             assert int(chr) in neighbour_list
 
 class TestGraph:
-
+    '''
+    testing class Graph
+    '''
     def test_graph_constructor(self):
+        '''
+        ensures vertices entered into graph are found in graph
+        '''
         graph = create_graph()
         vertices = graph.vertex_dictionary
         assert 'v1' and 'v2' and 'v3' and 'v4' in vertices
 
     def test_graph_compartmentalize(self):
+        '''
+        tests compartmentalize, ensures correct vertices are put in separate subtrees
+        '''
         graph = create_graph()
         graph.create_subgraph_dict()
         subgraph_dict = graph.get_component_dictionary()
