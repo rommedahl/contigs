@@ -208,11 +208,17 @@ def graph_dictionary_creator(file, n_o_lines=None):
     if not n_o_lines:
         for line in file:
             line_list = file.readline().replace('\n', '').split('\t')
-            line_list_to_dict(line_list, graph_dictionary)
+            if len(line_list) > 1:
+                line_list_to_dict(line_list, graph_dictionary)
+            else:
+                print('line list: {}\nhas too few elements'.format(line_list))
     else:
         for i in range(n_o_lines):
             line_list = file.readline().replace('\n', '').split('\t')
-            line_list_to_dict(line_list, graph_dictionary)
+            if len(line_list) > 1:
+                line_list_to_dict(line_list, graph_dictionary)
+            else:
+                print('line list: {}\nhas too few elements'.format(line_list))
     return graph_dictionary
 
 def line_list_to_dict(line_list, graph_dictionary):
