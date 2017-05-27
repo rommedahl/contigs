@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 import bokeh.plotting as bp
-
+import math
 
 #sys.argv is a list of arguments passed via the terminal to the script
 #sys.stdin takes input from standard in
@@ -13,7 +13,7 @@ def file_reader(file, limit=0):
     data_list = []
     for line in file:
         line_list = line.split(' ')
-        value = int(line_list[0])
+        value = float(line_list[0])
         if limit and value < limit:
             under_limit += 1
             data_list += [value]
@@ -32,10 +32,10 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
                 background_fill_color="#E8DDCB")
     if sys.argv[-1] == '-stdin':
         with sys.stdin as file:
-            data_list = file_reader(file, int(sys.argv[1]))
+            data_list = file_reader(file, float(sys.argv[1]))
     else:
         with open(sys.argv[1]) as file:
-            data_list = file_reader(file, int(sys.argv[2]))
+            data_list = file_reader(file, float(sys.argv[2]))
     measured = np.array(data_list)
     hist, edges = np.histogram(measured, density=False, bins=100)
     p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:],
