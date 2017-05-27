@@ -29,6 +29,19 @@ class TestGraph:
     '''
     testing class Graph
     '''
+    def test_graph_dictionary_creator(self):
+        '''
+        Ensures that all the values is also keys (vertices) i.e neighbors are also vertices. It also control some file handling.
+        '''
+        with open('bin/test_data_graph_dic_creator.txt') as file: # note that you might have to change the search.
+            graph_dictionary = graph_dictionary_creater(file, 5)
+        for elm in list(graph_dictionary.values()):
+            if len(list(elm)) > 1:
+                for i in list(elm):
+                    assert i in list(graph_dictionary.keys())
+            else:
+                assert list(elm)[0] in list(graph_dictionary.keys())
+
     def test_graph_constructor(self):
         '''
         ensures vertices entered into graph are found in graph
@@ -63,4 +76,8 @@ class TestGraph:
 
 
 if __name__ == '__main__':
-    pass
+    test = TestGraph()
+    test.test_graph_dictionary_creator()
+    test.test_graph_constructor()
+    test.test_component_diameter()
+    test.test_graph_compartmentalize()
