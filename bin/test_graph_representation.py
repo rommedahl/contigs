@@ -34,7 +34,7 @@ class TestGraph:
         Ensures that all the values is also keys (vertices) i.e neighbors are also vertices. It also control some file handling.
         '''
         with open('bin/test_data_graph_dic_creator.txt') as file: # note that you might have to change the search.
-            graph_dictionary = graph_dictionary_creater(file, 5)
+            graph_dictionary = graph_dictionary_creator(file, 5)
         for elm in list(graph_dictionary.values()):
             if len(list(elm)) > 1:
                 for i in list(elm):
