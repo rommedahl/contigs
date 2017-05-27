@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Execure with ./contigs.sh 
+# Execute with ./contigs.sh
 
 echo 'Data analysis'
 
@@ -14,7 +14,7 @@ echo 'Display head, relative info'
 
 head data/data | awk '{print $6" "$7" "$8" "$10" "$11" "$12" = "$7-$6-($11-$10)}'
 
-echo 'Display missmatch in length'
+echo 'Display mismatch in length'
 
 #cat data/data | awk '{if (($7-$6-($11-$10)) != 0) print ($7-$6-($11-$10))}' | wc -l
 
@@ -44,6 +44,7 @@ if [ ! -f data/IDs ]; then
 	echo 'IDs does not exist.'
 	cat data/IDsC1 data/IDsC2 | sort --parallel=6 | uniq > data/IDs
 fi
+
 wc -l data/IDs
 
 echo 'Counting sub set contigs'
