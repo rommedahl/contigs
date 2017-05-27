@@ -1,6 +1,8 @@
 #!/bin/bash
 # From a M4 it returns a table with contig ID, its number of occurences and its length.
-# Input:  stdin in M4 file format
+# Input: colapsed M4 file
 # Output: stout
-# https://stackoverflow.com/questions/44197556/concatenation-of-columns-from-the-same-stream
-$1 tee >(cut -f1,8) >(cut -f2,12) >/dev/null
+
+# http://www.unix.com/shell-programming-and-scripting/51129-column-sum-group-uniq-records.html
+
+catM4file.sh $1 | awk '{print $1"	"($6-$5)/$7}' | awk '{arr[$1]+=$2} END {for (i in arr) {print i,arr[i]}}' | sort -k2 -nr
