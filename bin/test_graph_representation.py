@@ -77,6 +77,7 @@ class TestGraph:
             assert 'v4' in t2_path
         else:
             assert t2_diameter == 4
+        graph.write_diameter_path_to_file()
 
 
 

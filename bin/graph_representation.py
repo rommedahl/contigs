@@ -168,6 +168,18 @@ class Graph:
         diameter = max_distance
         return diameter, path
 
+    def write_diameter_path_to_file(self):
+        n = 0
+        for tree in self.__component_trees:
+            n += 1
+            d, path = self.component_diameter(tree)
+            filename = 'partition'+ str(n)+'.m4'
+            file = open(filename, 'w')
+            file.write(str(d+1)+'\n')
+            for vertex in path:
+                file.write(vertex+'\n')
+
+
     @classmethod
     def __breadth_first_search(cls, source_vertex):
         """A breadth first search algorithm, returning a breadth_first_search_tree_object"""
