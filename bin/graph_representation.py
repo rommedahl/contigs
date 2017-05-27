@@ -173,7 +173,7 @@ class Graph:
         for tree in self.__component_trees:
             n += 1
             d, path = self.component_diameter(tree)
-            filename = 'partition'+ str(n)+'.m4'
+            filename = 'partition'+ str(n)+'.txt'
             file = open(filename, 'w')
             file.write(str(d+1)+'\n')
             for vertex in path:
@@ -246,18 +246,21 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
             graph_dictionary = graph_dictionary_creator(file, 10)
 
     graph = Graph(graph_dictionary)
-    print(graph_dictionary)
+  #  print(graph_dictionary)
 
-    for key in graph:
-        print('in graph', key)
+    # for key in graph:
+    #     print('in graph', key)
+    #
+    # for key in graph:
+    #     tree = graph.bfs(key)
+    #     break
+    #
+    # for bps in tree:
+    #     print(bps.get_distance_to_source())
+    #
+    # graph.create_subgraph_dict()
+    # print(graph.components_dictionary)
+    # print(graph.get_component_trees())
 
-    for key in graph:
-        tree = graph.bfs(key)
-        break
-
-    for bps in tree:
-        print(bps.get_distance_to_source())
-
-    graph.create_subgraph_dict()
-    print(graph.components_dictionary)
-    print(graph.get_component_trees())
+    graph.compartmentalize()
+    graph.write_diameter_path_to_file()
