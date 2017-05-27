@@ -188,7 +188,7 @@ class Graph:
         return the_tree
 
 
-def graph_dictionary_creater(file, n_o_lines=None):
+def graph_dictionary_creator(file, n_o_lines=None):
     """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key, 
     n2_key, ...} where key is an immutable value, unique for every vertex"""
     graph_dictionary = {}
@@ -220,18 +220,18 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     if argument_list[-1] == '-stdin':
         try:
             with sys.stdin as file:
-                graph_dictionary = graph_dictionary_creater(file, int(argument_list[1]))
+                graph_dictionary = graph_dictionary_creator(file, int(argument_list[1]))
         except:
             raise #except: raise pattern raises whatever error occurs
     elif len(argument_list) > 1:
         try:
             with open(argument_list[1]) as file:
-                graph_dictionary = graph_dictionary_creater(file, int(argument_list[2]))
+                graph_dictionary = graph_dictionary_creator(file, int(argument_list[2]))
         except:
             raise
     else:
         with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
-            graph_dictionary = graph_dictionary_creater(file, 10)
+            graph_dictionary = graph_dictionary_creator(file, 10)
 
     graph = Graph(graph_dictionary)
     print(graph_dictionary)
