@@ -233,6 +233,7 @@ def line_list_to_dict(line_list, graph_dictionary):
         graph_dictionary[line_list[1]] |= {line_list[0]}
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
+    sys.setrecursionlimit(10000)
     argument_list = sys.argv
 
     if argument_list[-1] == '-stdin':
