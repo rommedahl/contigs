@@ -176,18 +176,28 @@ class Graph:
         n = 0
         for tree in self.__component_trees:
             n += 1
-            d, path = self.component_diameter(tree)
-            size = tree.get_size()
-            diameter_size_ratio = d / size              # OBS Directory
-            filename = 'TestPartitioner/partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
-            file = open(filename, 'w')
-            file.write(str(diameter_size_ratio)+'\n')
-            file.write(str(d+1)+'\n')
-            file.write(str(size)+'\n')
-            for vertex in path:
-                file.write(vertex+'\n')
-            file.close()
-
+            if tree.get_size() > 2:
+                d, path = self.component_diameter(tree)
+                size = tree.get_size()
+                diameter_size_ratio = d / size
+                filename = 'partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
+                file = open(filename, 'w')
+                file.write(str(diameter_size_ratio)+'\n')
+                file.write(str(d+1)+'\n')
+                file.write(str(size)+'\n')
+                for vertex in path:
+                    file.write(vertex+'\n')
+                file.close()
+            else:
+                filename = 'partition_'+ str(n)+'_dmr_1.txt'
+                file = open(filename, 'w')
+                file.write(str(1)+'\n')
+                file.write(str(2)+'\n')
+                file.write(str(2)+'\n')
+                for branch in tree:
+                    vertex = branch.get_vertex().get_key()
+                    file.write(vertex + '\n')
+                file.close()
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
