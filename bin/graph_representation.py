@@ -179,7 +179,7 @@ class Graph:
             d, path = self.component_diameter(tree)
             size = tree.get_size()
             diameter_size_ratio = d / size
-            filename = 'TestPartitioner2/partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
+            filename = 'TestPartitioner/partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
             file = open(filename, 'w')
             file.write(str(diameter_size_ratio)+'\n')
             file.write(str(d+1)+'\n')
