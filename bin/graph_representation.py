@@ -177,10 +177,13 @@ class Graph:
         for tree in self.__component_trees:
             n += 1
             d, path = self.component_diameter(tree)
-            filename = 'TestPartitioner/partition'+ str(n)+'.txt'
+            size = tree.get_size()
+            diameter_size_ratio = d / size
+            filename = 'TestPartitioner2/partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
             file = open(filename, 'w')
+            file.write(str(diameter_size_ratio)+'\n')
             file.write(str(d+1)+'\n')
-            file.write(str(tree.get_size())+'\n')
+            file.write(str(size)+'\n')
             for vertex in path:
                 file.write(vertex+'\n')
 
