@@ -177,32 +177,42 @@ class Graph:
         diameter = max_distance
         return diameter, path
 
-    def write_diameter_path_to_file(self,component_diameter):
+
+    def write_diameter_path_to_file(self, threshold_size=0,component_diameter):
+        '''
+        creates files for each subtree with ratio of diamter to size, diameter, size
+        and all contig ids along diam path
+        :param threshold_size: only regard subgraphs with a size >= threshold
+        :return: creates files in current directory
+        '''
         n = 0
         for tree in self.__component_trees:
-            n += 1
-            if tree.get_size() > 2:
-                d, path = component_diameter[n-1] # Made changes in order to utilize parallel programming.
-                size = tree.get_size()
-                diameter_size_ratio = d / size
-                filename = 'partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
-                file = open(filename, 'w')
-                file.write(str(diameter_size_ratio)+'\n')
-                file.write(str(d+1)+'\n')
-                file.write(str(size)+'\n')
-                for vertex in path:
-                    file.write(vertex+'\n')
-                file.close()
-            else:
-                filename = 'partition_'+ str(n)+'_dmr_1.txt'
-                file = open(filename, 'w')
-                file.write(str(1)+'\n')
-                file.write(str(2)+'\n')
-                file.write(str(2)+'\n')
-                for branch in tree:
-                    vertex = branch.get_vertex().get_key()
-                    file.write(vertex + '\n')
-                file.close()
+            size = tree.get_size()
+            if size >= threshold_size:
+                n += 1
+                if size > 2:
+                    d, path = component_diameter[n-1] # Made changes in order to utilize parallel programming.
+                    diameter_size_ratio = d / size
+                    filename = 'partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)[:4]+'.txt'
+                    file = open(filename, 'w')
+                    file.write(str(diameter_size_ratio)+'\n')
+                    file.write(str(d+1)+'\n')
+                    file.write(str(size)+'\n')
+                    for vertex in path:
+                        file.write(vertex+'\n')
+                    file.close()
+                else:
+                    filename = 'partition_'+ str(n)+'_dmr_1.txt'
+                    file = open(filename, 'w')
+                    file.write(str(1)+'\n')
+                    file.write(str(2)+'\n')
+                    file.write(str(2)+'\n')
+                    for branch in tree:
+                        vertex = branch.get_vertex().get_key()
+                        file.write(vertex + '\n')
+                    file.close()
+
+>>>>>>> a8a51b58160e5dae3b9ca89176032a44f29a15f0
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
@@ -257,19 +267,25 @@ def line_list_to_dict(line_list, graph_dictionary):
         graph_dictionary[line_list[1]] |= {line_list[0]}
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-    sys.setrecursionlimit(10000)
     argument_list = sys.argv
+    lines = None
+    threshold = None
+    for argument in argument_list:
+        if argument[:10] == 'threshold=':
+            threshold = int(argument[10:])
+        if argument[:6] == 'lines=':
+            lines = int(argument[6:])
 
     if argument_list[-1] == '-stdin':
         try:
             with sys.stdin as file:
-                graph_dictionary = graph_dictionary_creator(file, int(argument_list[1]))
+                graph_dictionary = graph_dictionary_creator(file, lines)
         except:
             raise #except: raise pattern raises whatever error occurs
     elif len(argument_list) > 1:
         try:
             with open(argument_list[1]) as file:
-                graph_dictionary = graph_dictionary_creator(file, int(argument_list[2]))
+                graph_dictionary = graph_dictionary_creator(file, lines)
         except:
             raise
     else:
@@ -306,4 +322,5 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     # print(graph.get_component_trees())
 
     graph.compartmentalize()
-    graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph)) # Now takes the return from MultiProcessing_ComponentDiameter as argument
+
+    graph.write_diameter_path_to_file(threshold,MultiProcessing_ComponentDiameter(graph)) # Now takes the return from MultiProcessing_ComponentDiameter as argument
