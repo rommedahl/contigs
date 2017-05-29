@@ -1,5 +1,6 @@
 import sys
 import numpy as np
+from pathos.multiprocessing import ProcessingPool as Pool
 
 
 class BranchPoint:
@@ -55,6 +56,9 @@ class BreadthFirstSearchTree:
                 for successor_successor in self.__iterator(successor):
                     yield successor_successor
 
+    def ResetColor_bfs(self):
+        for i in self:
+            i.get_vertex().set_color('white')
 
 class Vertex:
     def __init__(self, key):
@@ -152,6 +156,7 @@ class Graph:
         :param k: amount of times to search the tree
         :return: diameter, diameter path = [key1, key2, ... ]
         '''
+        component_tree.ResetColor_bfs() # maybe unnecessary
         max_distance = 0
         furthest_branch = component_tree.get_source_branch_point()
         for i in range(k):
@@ -164,7 +169,7 @@ class Graph:
                     furthest_in_tree = distance
                     furthest_branch = branch_point
             component_tree = self.__breadth_first_search(furthest_branch.get_vertex())
-            self.color_reset()
+            component_tree.ResetColor_bfs()
         path = []
         while furthest_branch:
             path.append(furthest_branch.get_vertex().get_key())
@@ -172,12 +177,12 @@ class Graph:
         diameter = max_distance
         return diameter, path
 
-    def write_diameter_path_to_file(self):
+    def write_diameter_path_to_file(self,component_diameter):
         n = 0
         for tree in self.__component_trees:
             n += 1
             if tree.get_size() > 2:
-                d, path = self.component_diameter(tree)
+                d, path = component_diameter[n-1] # Made changes in order to utilize parallel programming.
                 size = tree.get_size()
                 diameter_size_ratio = d / size
                 filename = 'partition_'+ str(n)+'_dmr_'+str(diameter_size_ratio)+'.txt'
@@ -271,6 +276,18 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
         with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
             graph_dictionary = graph_dictionary_creator(file, 10)
 
+    def MultiProcessing_ComponentDiameter(graph):
+        '''
+        maps the function component_diameter over the component tree list. Must be on the top-level to avoid error.
+        :param graph: Graph object
+        :return: returns a list with tuples (the returns from component_diameter).
+        '''
+        comp_trees = graph.get_component_trees()
+        p = Pool(4)  # From the module pathos.multiprocessing
+        DataOut = p.map(lambda x: graph.component_diameter(x),comp_trees)
+        #print(DataOut)
+        return DataOut
+
     graph = Graph(graph_dictionary)
   #  print(graph_dictionary)
 
@@ -289,4 +306,4 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     # print(graph.get_component_trees())
 
     graph.compartmentalize()
-    graph.write_diameter_path_to_file()
+    graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph)) # Now takes the return from MultiProcessing_ComponentDiameter as argument
