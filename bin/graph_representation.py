@@ -187,7 +187,7 @@ class Graph:
                 if size > 2:
                     d, path = self.component_diameter(tree)
                     diameter_size_ratio = d / size
-                    filename = 'partition_'+ str(n)+'.txt'
+                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(diameter_size_ratio)+'\n')
                     file.write(str(d+1)+'\n')
@@ -196,7 +196,7 @@ class Graph:
                         file.write(vertex+'\n')
                     file.close()
                 else:
-                    filename = 'partition_'+ str(n)+'.txt'
+                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(1)+'\n')
                     file.write(str(2)+'\n')
@@ -304,3 +304,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
 
     graph.compartmentalize()
     graph.write_diameter_path_to_file(threshold)
+    size = len(graph.get_component_trees())
+    size_file = open('TestPartitioner/size.txt', 'w')
+    size_file.write(str(size))
+    size_file.close()
