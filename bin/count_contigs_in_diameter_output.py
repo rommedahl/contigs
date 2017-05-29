@@ -1,6 +1,8 @@
 import os
+import sys
 
-l = os.listdir('/Users/walter/TestPartitioner') #ooops beware file directory
+x, dir = sys.argv
+l = os.listdir(dir) #ooops beware file directory
 
 total_diameter = 0
 total_size = 0
@@ -8,6 +10,7 @@ for f in l:
     if f != '.DS_Store':
         try:
             f = open(f)
+            f.readline()
             d = int(f.readline())
             s = int(f.readline())
             f.close()
