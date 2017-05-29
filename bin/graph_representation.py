@@ -187,7 +187,7 @@ class Graph:
                 if size > 2:
                     d, path = self.component_diameter(tree)
                     diameter_size_ratio = d / size
-                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
+                    filename = 'partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(diameter_size_ratio)+'\n')
                     file.write(str(d+1)+'\n')
@@ -196,7 +196,7 @@ class Graph:
                         file.write(vertex+'\n')
                     file.close()
                 else:
-                    filename = 'partition_'+ str(n)+'_dmr_1.txt'
+                    filename = 'partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(1)+'\n')
                     file.write(str(2)+'\n')
@@ -262,7 +262,7 @@ def line_list_to_dict(line_list, graph_dictionary):
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
     argument_list = sys.argv
     lines = None
-    threshold = None
+    threshold = 0
     for argument in argument_list:
         if argument[:10] == 'threshold=':
             threshold = int(argument[10:])
