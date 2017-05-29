@@ -43,7 +43,9 @@ class BreadthFirstSearchTree:
         return self.__source
 
     def __iter__(self):
-        return self.__iterator(self.__source)
+        for b in self.__branch_point_list:
+            yield b
+
 
     def __iterator(self, branch_point):
         yield branch_point
