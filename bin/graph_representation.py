@@ -174,9 +174,10 @@ class Graph:
 
     def write_diameter_path_to_file(self, threshold_size=0):
         '''
-        creates files for each subtree
-        :param threshold_size:
-        :return:
+        creates files for each subtree with ratio of diamter to size, diameter, size
+        and all contig ids along diam path
+        :param threshold_size: only regard subgraphs with a size >= threshold
+        :return: creates files in current directory
         '''
         n = 0
         for tree in self.__component_trees:
