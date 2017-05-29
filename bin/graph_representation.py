@@ -46,8 +46,7 @@ class BreadthFirstSearchTree:
         for b in self.__branch_point_list:
             yield b
 
-
-    def __iterator(self, branch_point):
+    def __iterator(self, branch_point):              # Not used
         yield branch_point
         for successor in branch_point.get_successors_bp():
                 for successor_successor in self.__iterator(successor):
