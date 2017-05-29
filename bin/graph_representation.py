@@ -42,6 +42,9 @@ class BreadthFirstSearchTree:
     def get_source_branch_point(self):
         return self.__source
 
+    def get_size(self):
+        return len(self.__branch_point_list)
+
     def __iter__(self):
         for b in self.__branch_point_list:
             yield b
@@ -174,9 +177,10 @@ class Graph:
         for tree in self.__component_trees:
             n += 1
             d, path = self.component_diameter(tree)
-            filename = 'partition'+ str(n)+'.txt'
+            filename = 'TestPartitioner/partition'+ str(n)+'.txt'
             file = open(filename, 'w')
             file.write(str(d+1)+'\n')
+            file.write(str(tree.get_size())+'\n')
             for vertex in path:
                 file.write(vertex+'\n')
 
