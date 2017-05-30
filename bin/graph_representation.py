@@ -178,7 +178,7 @@ class Graph:
         return diameter, path
 
 
-    def write_diameter_path_to_file(self, threshold_size=0,component_diameter):
+    def write_diameter_path_to_file(self, component_diameter, threshold_size=0):
         '''
         creates files for each subtree with ratio of diamter to size, diameter, size
         and all contig ids along diam path
@@ -193,7 +193,7 @@ class Graph:
                 if size > 2:
                     d, path = component_diameter[n-1] # Made changes in order to utilize parallel programming.
                     diameter_size_ratio = d / size
-                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
+                    filename = 'partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(diameter_size_ratio)+'\n')
                     file.write(str(d+1)+'\n')
@@ -202,7 +202,7 @@ class Graph:
                         file.write(vertex+'\n')
                     file.close()
                 else:
-                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
+                    filename = 'partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(1)+'\n')
                     file.write(str(2)+'\n')
@@ -324,11 +324,11 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     graph.compartmentalize()
 
 
-    graph.write_diameter_path_to_file(threshold,MultiProcessing_ComponentDiameter(graph)) # Now takes the return from MultiProcessing_ComponentDiameter as argument
+    graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph),threshold) # Now takes the return from MultiProcessing_ComponentDiameter as argument
 
-    graph.write_diameter_path_to_file(threshold,MultiProcessing_ComponentDiameter(graph))
+    graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph),threshold)
     size = len(graph.get_component_trees())
-    size_file = open('TestPartitioner/size.txt', 'w')
+    size_file = open('size.txt', 'w')
     size_file.write(str(size))
     size_file.close()
 
