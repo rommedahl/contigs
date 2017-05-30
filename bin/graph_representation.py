@@ -303,7 +303,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     # print(graph.get_component_trees())
 
     graph.compartmentalize()
-    graph.write_diameter_path_to_file(threshold)
+    # graph.write_diameter_path_to_file(threshold)
     size = len(graph.get_component_trees())
     size_file = open('TestPartitioner/size.txt', 'w')
     size_file.write(str(size))
