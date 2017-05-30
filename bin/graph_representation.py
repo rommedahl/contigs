@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 from pathos.multiprocessing import ProcessingPool as Pool
+import time
 
 
 class BranchPoint:
@@ -193,7 +194,7 @@ class Graph:
                 if size > 2:
                     d, path = component_diameter[n-1] # Made changes in order to utilize parallel programming.
                     diameter_size_ratio = d / size
-                    filename = 'partition_'+ str(n)+'.txt'
+                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(diameter_size_ratio)+'\n')
                     file.write(str(d+1)+'\n')
@@ -202,7 +203,7 @@ class Graph:
                         file.write(vertex+'\n')
                     file.close()
                 else:
-                    filename = 'partition_'+ str(n)+'.txt'
+                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(1)+'\n')
                     file.write(str(2)+'\n')
@@ -211,7 +212,6 @@ class Graph:
                         vertex = branch.get_vertex().get_key()
                         file.write(vertex + '\n')
                     file.close()
-
 
 
     @classmethod
@@ -268,6 +268,7 @@ def line_list_to_dict(line_list, graph_dictionary):
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
     argument_list = sys.argv
+    sys.setrecursionlimit(1000000)
     lines = None
     threshold = 0
     for argument in argument_list:
@@ -321,13 +322,16 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     # print(graph.components_dictionary)
     # print(graph.get_component_trees())
 
+    t1 = time.time()
     graph.compartmentalize()
+    t2 = time.time()
+    print(t2-t1)
 
+  #  graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph),threshold) # Now takes the return from MultiProcessing_ComponentDiameter as argument
 
-    graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph),threshold) # Now takes the return from MultiProcessing_ComponentDiameter as argument
+    # graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph),threshold)
 
-    graph.write_diameter_path_to_file(MultiProcessing_ComponentDiameter(graph),threshold)
     size = len(graph.get_component_trees())
-    size_file = open('size.txt', 'w')
+    size_file = open('TestPartitioner/size.txt', 'w')
     size_file.write(str(size))
     size_file.close()
