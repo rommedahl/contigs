@@ -1,5 +1,4 @@
 import sys
-import numpy as np
 
 
 class BranchPoint:
@@ -14,12 +13,6 @@ class BranchPoint:
 
     def get_vertex(self):
         return self.__vertex
-
-    def get_successors_bp(self):
-        return self.__successors
-
-    def get_predecessor_bp(self):
-        return self.__predecessor_bp
 
     def get_distance_to_source(self):
         return self.__distance_to_source
@@ -49,12 +42,6 @@ class BreadthFirstSearchTree:
         for b in self.__branch_point_list:
             yield b
 
-    def __iterator(self, branch_point):              # Not used
-        yield branch_point
-        for successor in branch_point.get_successors_bp():
-                for successor_successor in self.__iterator(successor):
-                    yield successor_successor
-
 
 class Vertex:
     def __init__(self, key):
@@ -73,8 +60,6 @@ class Vertex:
 
     def add_neighbour(self, neighbour):
         self.__neighbours[neighbour.get_key()] = [neighbour]
-        #for values in self.__neighbours.values():
-        #    print('{} has neighbours {}'.format(neighbour.get_key(), values[0].get_key()))
 
     def get_neighbours(self):
         neighbour_list = []
@@ -98,17 +83,6 @@ class Graph:
             for value in graph_dictionary[key]:
                 value_vertex = self.vertex_dictionary[value]
                 key_vertex.add_neighbour(value_vertex)
-
-    def __iter__(self):
-        return self.__yielder()
-
-    def __yielder(self):
-        for key in self.vertex_dictionary.keys():
-            yield key
-
-    def bfs(self, vertex_key):
-        source = self.vertex_dictionary[vertex_key]
-        return self.__breadth_first_search(source)
 
     def color_reset(self):
         for vertex in self.vertex_dictionary.values():
@@ -134,9 +108,6 @@ class Graph:
     def get_component_trees(self):
         return self.__component_trees
 
-    def get_component_dictionary(self):
-        return self.components_dictionary
-
     def compartmentalize(self):
         """"Creates a list of breadth_first_search_tree_objects, one for each component of the graph object"""
         self.color_reset()
@@ -144,67 +115,6 @@ class Graph:
             if vertex.get_color() != 'black':
                 bfs_tree = self.__breadth_first_search(vertex)
                 self.__component_trees += [bfs_tree]
-
-    def component_diameter(self, component_tree, k=5):
-        '''
-        finds the diameter of a bfs_tree, probabilistic with k tries
-        :param component_tree: bfs_tree
-        :param k: amount of times to search the tree
-        :return: diameter, diameter path = [key1, key2, ... ]
-        '''
-        max_distance = 0
-        furthest_branch = component_tree.get_source_branch_point()
-        for i in range(k):
-            furthest_in_tree = 0
-            for branch_point in component_tree:
-                distance = branch_point.get_distance_to_source()
-                if distance > max_distance:
-                    max_distance = distance
-                if distance > furthest_in_tree:
-                    furthest_in_tree = distance
-                    furthest_branch = branch_point
-            component_tree = self.__breadth_first_search(furthest_branch.get_vertex())
-            self.color_reset()
-        path = []
-        while furthest_branch:
-            path.append(furthest_branch.get_vertex().get_key())
-            furthest_branch = furthest_branch.get_predecessor_bp()
-        diameter = max_distance
-        return diameter, path
-
-    def write_diameter_path_to_file(self, threshold_size=0):
-        '''
-        creates files for each subtree with ratio of diamter to size, diameter, size
-        and all contig ids along diam path
-        :param threshold_size: only regard subgraphs with a size >= threshold
-        :return: creates files in current directory
-        '''
-        n = 0
-        for tree in self.__component_trees:
-            size = tree.get_size()
-            if size >= threshold_size:
-                n += 1
-                if size > 2:
-                    d, path = self.component_diameter(tree)
-                    diameter_size_ratio = d / size
-                    filename = 'TestPartitioner/d_partition_'+ str(n)+'.txt'
-                    file = open(filename, 'w')
-                    file.write(str(diameter_size_ratio)+'\n')
-                    file.write(str(d+1)+'\n')
-                    file.write(str(size)+'\n')
-                    for vertex in path:
-                        file.write(vertex+'\n')
-                    file.close()
-                else:
-                    filename = 'TestPartitioner/d_partition_'+ str(n)+'.txt'
-                    file = open(filename, 'w')
-                    file.write(str(1)+'\n')
-                    file.write(str(2)+'\n')
-                    file.write(str(2)+'\n')
-                    for branch in tree:
-                        vertex = branch.get_vertex().get_key()
-                        file.write(vertex + '\n')
-                    file.close()
 
     def write_trees_to_file(self):
         size = str(len(self.__component_trees))
@@ -277,46 +187,15 @@ def line_list_to_dict(line_list, graph_dictionary):
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
     argument_list = sys.argv
     lines = None
-    threshold = 0
     for argument in argument_list:
-        if argument[:10] == 'threshold=':
-            threshold = int(argument[10:])
         if argument[:6] == 'lines=':
             lines = int(argument[6:])
-
-    if argument_list[-1] == '-stdin':
-        try:
-            with sys.stdin as file:
-                graph_dictionary = graph_dictionary_creator(file, lines)
-        except:
-            raise #except: raise pattern raises whatever error occurs
-    elif len(argument_list) > 1:
-        try:
-            with open(argument_list[1]) as file:
-                graph_dictionary = graph_dictionary_creator(file, lines)
-        except:
-            raise
-    else:
-        with open('Spruce_fingerprint_2017-03-10_16.48.olp.m4') as file:
-            graph_dictionary = graph_dictionary_creator(file, 10)
-
+    try:
+        with sys.stdin as file:
+            graph_dictionary = graph_dictionary_creator(file, lines)
+    except:
+        raise #except: raise pattern raises whatever error occurs
     graph = Graph(graph_dictionary)
-  #  print(graph_dictionary)
-
-    # for key in graph:
-    #     print('in graph', key)
-    #
-    # for key in graph:
-    #     tree = graph.bfs(key)
-    #     break
-    #
-    # for bps in tree:
-    #     print(bps.get_distance_to_source())
-    #
-    # graph.create_subgraph_dict()
-    # print(graph.components_dictionary)
-    # print(graph.get_component_trees())
-
     graph.compartmentalize()
     graph.write_trees_to_file()
 
