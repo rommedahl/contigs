@@ -174,7 +174,7 @@ class Graph:
 
     def write_diameter_path_to_file(self, threshold_size=0):
         '''
-        creates files for each subtree with ratio of diamter to size, diameter, size
+        creates files for each subtree with ratio of diameter to size, diameter, size
         and all contig ids along diam path
         :param threshold_size: only regard subgraphs with a size >= threshold
         :return: creates files in current directory
@@ -303,7 +303,7 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     # print(graph.get_component_trees())
 
     graph.compartmentalize()
-    graph.write_diameter_path_to_file(threshold)
+  #  graph.write_diameter_path_to_file(threshold)
     size = len(graph.get_component_trees())
     size_file = open('TestPartitioner/size.txt', 'w')
     size_file.write(str(size))
