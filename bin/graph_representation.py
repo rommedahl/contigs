@@ -187,7 +187,7 @@ class Graph:
                 if size > 2:
                     d, path = self.component_diameter(tree)
                     diameter_size_ratio = d / size
-                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
+                    filename = 'TestPartitioner/d_partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(diameter_size_ratio)+'\n')
                     file.write(str(d+1)+'\n')
@@ -196,7 +196,7 @@ class Graph:
                         file.write(vertex+'\n')
                     file.close()
                 else:
-                    filename = 'TestPartitioner/partition_'+ str(n)+'.txt'
+                    filename = 'TestPartitioner/d_partition_'+ str(n)+'.txt'
                     file = open(filename, 'w')
                     file.write(str(1)+'\n')
                     file.write(str(2)+'\n')
@@ -206,6 +206,21 @@ class Graph:
                         file.write(vertex + '\n')
                     file.close()
 
+    def write_trees_to_file(self):
+        size = str(len(self.__component_trees))
+        filename = 'TestPartitioner/partitions_'+size+'.txt'
+        file = open(filename, 'w')
+        for tree in self.__component_trees:
+            size = tree.get_size()
+            keys = []
+            for branch in tree:
+                key = branch.get_vertex().get_key()
+                keys.append(key)
+            file.write('\n')
+            file.write(str(size)+'\n')
+            for key in keys:
+                file.write(key+'\n')
+        file.close()
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
@@ -303,8 +318,5 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     # print(graph.get_component_trees())
 
     graph.compartmentalize()
-    graph.write_diameter_path_to_file(threshold)
-    size = len(graph.get_component_trees())
-    size_file = open('TestPartitioner/size.txt', 'w')
-    size_file.write(str(size))
-    size_file.close()
+    graph.write_trees_to_file()
+
