@@ -1,5 +1,6 @@
 import sys
-
+import statistics as stat
+import time
 
 class BranchPoint:
     def __init__(self, vertex, predecessor_bp=None, distance_to_source=0):
@@ -113,19 +114,27 @@ class Graph:
 
     def write_trees_to_file(self):
         size = str(len(self.__component_trees))
-        filename = 'TestPartitioner/partitions_'+size+'.txt'
-        file = open(filename, 'w')
+        filename1 = 'B_partitions_'+size+'.txt'
+        filename2 = 'B_partition_info'+size+'.txt'
+        file1 = open(filename1, 'w')
+        file2 = open(filename2, 'w')
+        sizes = []
         for tree in self.__component_trees:
             size = tree.get_size()
+            sizes.append(size)
             keys = []
             for branch in tree:
                 key = branch.get_vertex().get_key()
                 keys.append(key)
-            file.write('\n')
-            file.write(str(size)+'\n')
+            file1.write(str(size)+'\n')
+            file2.write(str(size) + '\n')
             for key in keys:
-                file.write(key+'\n')
-        file.close()
+                file1.write(key+'\n')
+            file1.write('\n')
+        median = str(stat.median(sizes))
+        file2.write('Median size of partition: '+median+'\n')
+        file1.close()
+        file2.close()
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
@@ -185,6 +194,9 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     for argument in argument_list:
         if argument[:6] == 'lines=':
             lines = int(argument[6:])
+    t1 = time.time()
+    # input_file = open('/Users/walter/OrginalDataOverlapFreqLe15')
+    # graph_dictionary = graph_dictionary_creator(input_file)
     try:
         with sys.stdin as file:
             graph_dictionary = graph_dictionary_creator(file, lines)
@@ -193,4 +205,5 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     graph = Graph(graph_dictionary)
     graph.compartmentalize()
     graph.write_trees_to_file()
-
+    t2 = time.time()
+    print(t2-t1)
