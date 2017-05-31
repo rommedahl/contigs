@@ -6,10 +6,6 @@ class BranchPoint:
         self.__vertex = vertex
         self.__distance_to_source = distance_to_source
         self.__predecessor_bp = predecessor_bp
-        self.__successors = []
-
-    def add_successor(self, new_successor):
-        self.__successors += [new_successor]
 
     def get_vertex(self):
         return self.__vertex
@@ -27,7 +23,6 @@ class BreadthFirstSearchTree:
 
     def insert(self, vertex, predecessor_branch_point=None, distance_to_source=0, with_return=False):
         new_branch_point = BranchPoint(vertex, predecessor_branch_point, distance_to_source)
-        predecessor_branch_point.add_successor(new_branch_point)
         self.__branch_point_list += [new_branch_point]
         if with_return:
             return new_branch_point
