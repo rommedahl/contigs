@@ -6,7 +6,6 @@ class BranchPoint:
     def __init__(self, vertex, predecessor_bp=None, distance_to_source=0):
         self.__vertex = vertex
         self.__distance_to_source = distance_to_source
-        self.__predecessor_bp = predecessor_bp
 
     def get_vertex(self):
         return self.__vertex
