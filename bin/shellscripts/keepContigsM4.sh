@@ -5,5 +5,5 @@
 #
 # remoteContigsM4.sh CONTIGLIST M4FILE
 #
-join -1 1 -2 2 -t '	' <(sort $1) <( sort -k2 <(join -1 1 -2 2 -t '	' <(sort $1) <(sort -k2 $2)))
+join -1 1 -2 2 -t '	' <(sort $1 -u) <( sort -k2 <(join -1 1 -2 2 -t '	' <(sort $1 -u) <(sort -k2 $2)))
 
