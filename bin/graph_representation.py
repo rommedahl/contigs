@@ -83,23 +83,6 @@ class Graph:
         for vertex in self.vertex_dictionary.values():
             vertex.set_color('white')
 
-    def create_subgraph_dict(self):
-        """Uses bfs to create a dictionary of the form
-        self.components_dictionary[index] = list_of_keys_in_same_component"""
-        if not self.__component_trees:
-            self.compartmentalize()
-        component_trees = self.get_component_trees()
-        component_list_of_lists = []
-        for tree in component_trees:
-            tree_list = []
-            for branchpoint in tree:
-                tree_list += [branchpoint.get_vertex().get_key()]
-            component_list_of_lists += [tree_list]
-        counter = 0
-        for list in component_list_of_lists:
-            self.components_dictionary[counter] = list
-            counter += 1
-
     def get_component_trees(self):
         return self.__component_trees
 
@@ -187,22 +170,27 @@ def line_list_to_dict(line_list, graph_dictionary):
     else:
         graph_dictionary[line_list[1]] |= {line_list[0]}
 
-if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
+
+def main():
     argument_list = sys.argv
     lines = None
     for argument in argument_list:
         if argument[:6] == 'lines=':
             lines = int(argument[6:])
     t1 = time.time()
-    # input_file = open('/Users/walter/OrginalDataOverlapFreqLe15')
-    # graph_dictionary = graph_dictionary_creator(input_file)
     try:
         with sys.stdin as file:
             graph_dictionary = graph_dictionary_creator(file, lines)
     except:
         raise #except: raise pattern raises whatever error occurs
+    # with open('/Users/walter/contigs/data/sample.m4') as input_file:
+    #     graph_dictionary =graph_dictionary_creator(input_file)
     graph = Graph(graph_dictionary)
+    del(graph_dictionary)
     graph.compartmentalize()
     graph.write_trees_to_file()
     t2 = time.time()
     print(t2-t1)
+
+if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
+    main()

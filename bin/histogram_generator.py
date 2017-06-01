@@ -28,7 +28,7 @@ def file_reader(file, limit=0):
 
 
 if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
-    p1 = bp.figure(title="Overlap frequencies",
+    p1 = bp.figure(title="Sizes of subgraphs",
                 background_fill_color="#E8DDCB")
     if sys.argv[-1] == '-stdin':
         with sys.stdin as file:
@@ -41,6 +41,6 @@ if __name__ == '__main__': #ensures that the main run isn't run when this file i
     p1.quad(top=hist, bottom=0, left=edges[:-1], right=edges[1:],
             fill_color="#036564", line_color="#033649")
     p1.legend.location = "top_left"
-    p1.xaxis.axis_label = 'x'
-    p1.yaxis.axis_label = 'n.o. vertices'
+    p1.xaxis.axis_label = 'subgraph size'
+    p1.yaxis.axis_label = 'n.o. subgraphs'
     bp.show(p1)
