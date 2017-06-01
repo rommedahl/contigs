@@ -70,5 +70,4 @@ if __name__ == '__main__':
     test = TestGraph()
     test.test_graph_dictionary_creator()
     test.test_graph_constructor()
-    test.test_component_diameter()
     test.test_graph_compartmentalize()
