@@ -27,7 +27,7 @@ class TestVertex:
 
 class TestGraph:
     '''
-    testing class Graph
+    testing class Graph, be sure to stand in main /contigs directory
     '''
     def test_graph_dictionary_creator(self):
         '''
@@ -55,11 +55,15 @@ class TestGraph:
         tests compartmentalize, ensures correct vertices are put in separate subtrees
         '''
         graph = create_graph()
-        graph.create_subgraph_dict()
-        subgraph_dict = graph.get_component_dictionary()
-        assert len(subgraph_dict) == 2
-        for i, j in subgraph_dict.items():
-                assert ('v1' and 'v2' and 'v3' in j) ^ ('v4' in j)
+        graph.compartmentalize()
+        component_trees = graph.get_component_trees()
+        assert len(component_trees) == 2
+        for tree in component_trees:
+            v_list = []
+            for branch in tree:
+                v_list.append(branch.get_vertex().get_key())
+            assert set(v_list) == {'v1', 'v2', 'v3', 'v5', 'v6'} \
+                or v_list == ['v4']                   # set för att kontrollera att elementen är lika oavsett index
 
 
 if __name__ == '__main__':

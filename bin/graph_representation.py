@@ -2,8 +2,9 @@ import sys
 import statistics as stat
 import time
 
+
 class BranchPoint:
-    def __init__(self, vertex, predecessor_bp=None, distance_to_source=0):
+    def __init__(self, vertex, predecessor_branch_point=0, distance_to_source=0):
         self.__vertex = vertex
         self.__distance_to_source = distance_to_source
 
@@ -132,7 +133,8 @@ class Graph:
                 if neighbour.get_color() is 'white':
                     neighbour.set_color('gray')
                     distance_to_source = branch_point.get_distance_to_source() + 1
-                    neighbour_branch_point = the_tree.insert(neighbour, branch_point, distance_to_source, with_return=True)
+                    neighbour_branch_point = the_tree.insert(neighbour, branch_point,
+                                                             distance_to_source, with_return=True)
                     queue += [neighbour_branch_point]
             vertex.set_color('black')
         return the_tree
@@ -142,7 +144,6 @@ def graph_dictionary_creator(file, n_o_lines=None):
     """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key,
     n2_key, ...} where key is an immutable value, unique for every vertex"""
     graph_dictionary = {}
-    line_list = []
     if not n_o_lines:
         for line in file:
             line_list = file.readline().replace('\n', '').split('\t')
@@ -182,15 +183,16 @@ def main():
         with sys.stdin as file:
             graph_dictionary = graph_dictionary_creator(file, lines)
     except:
-        raise #except: raise pattern raises whatever error occurs
+        raise  # except: raise pattern raises whatever error occurs
     # with open('/Users/walter/contigs/data/sample.m4') as input_file:
     #     graph_dictionary =graph_dictionary_creator(input_file)
     graph = Graph(graph_dictionary)
-    del(graph_dictionary)
+    del graph_dictionary
     graph.compartmentalize()
     graph.write_trees_to_file()
     t2 = time.time()
     print(t2-t1)
 
-if __name__ == '__main__': #ensures that the main run isn't run when this file is importet
+if __name__ == '__main__':  # ensures that the main run isn't run when this file is importet
     main()
+
