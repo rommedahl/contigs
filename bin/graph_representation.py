@@ -145,18 +145,17 @@ class Graph:
 def graph_dictionary_creator(file, n_o_lines=None):
     """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key,
     n2_key, ...} where key is an immutable value, unique for every vertex"""
-    split_by = '\t'
-    graph_dictionary = {}                                                       # BUG
+    graph_dictionary = {}
     if not n_o_lines:
-        for line in file:
-            line_list = file.readline().replace('\n', '').split(split_by)
+        for line in file.readlines():
+            line_list = line.split()
             if len(line_list) > 1:
                 line_list_to_dict(line_list, graph_dictionary)
             else:
                 print('line list: {}\nhas too few elements'.format(line_list))
     else:
         for i in range(n_o_lines):
-            line_list = file.readline().replace('\n', '').split(split_by)
+            line_list = file.readline().split()
             if len(line_list) > 1:
                 line_list_to_dict(line_list, graph_dictionary)
             else:
