@@ -189,7 +189,7 @@ def main():
             graph_dictionary = graph_dictionary_creator(file, lines)
     except:
         raise  # except: raise pattern raises whatever error occurs
-    # with open('/Users/walter/contigs/data/sample.m4') as input_file:
+    # with open('/Users/walter/web-Stanford.txt') as input_file:
     #     graph_dictionary =graph_dictionary_creator(input_file)
     graph = Graph(graph_dictionary)
     l = len(graph_dictionary)
@@ -200,6 +200,6 @@ def main():
     t2 = time.time()
     print(l, len(vert_dict), t2-t1)
 
-if __name__ == '__main__':  # ensures that the main run isn't run when this file is importet
+if __name__ == '__main__':  # ensures that the main run isn't run when this file is imported
     main()
 
