@@ -70,10 +70,10 @@ class Graph:
     def __init__(self, graph_dictionary):
         self.vertex_dictionary = {}
         self.__component_trees = []
-        for key in graph_dictionary.keys():
+        for key in graph_dictionary.keys():                     # adds vertices
             vertex = Vertex(key)
             self.vertex_dictionary[key] = vertex
-        for key in graph_dictionary.keys():
+        for key in graph_dictionary.keys():                     # adds edges
             key_vertex = self.vertex_dictionary[key]
             for value in graph_dictionary[key]:
                 value_vertex = self.vertex_dictionary[value]
@@ -82,6 +82,9 @@ class Graph:
     def color_reset(self):
         for vertex in self.vertex_dictionary.values():
             vertex.set_color('white')
+
+    def get_vertex_dict(self):
+        return self.vertex_dictionary
 
     def get_component_trees(self):
         return self.__component_trees
@@ -143,7 +146,7 @@ def graph_dictionary_creator(file, n_o_lines=None):
     """Creates a graph dictionary of the form graph_dictionary[vertex_key] = {neighbour1_key,
     n2_key, ...} where key is an immutable value, unique for every vertex"""
     split_by = '\t'
-    graph_dictionary = {}
+    graph_dictionary = {}                                                       # BUG
     if not n_o_lines:
         for line in file:
             line_list = file.readline().replace('\n', '').split(split_by)
@@ -162,14 +165,16 @@ def graph_dictionary_creator(file, n_o_lines=None):
 
 def line_list_to_dict(line_list, graph_dictionary):
     """Takes a line from the file split by ' ' and turned int a list and adds it to the graph dictionary"""
-    if line_list[0] not in graph_dictionary.keys():
-        graph_dictionary[line_list[0]] = {line_list[1]}
+    v = line_list[0]
+    n = line_list[1]
+    if v not in graph_dictionary.keys():
+        graph_dictionary[v] = {n}
     else:
-        graph_dictionary[line_list[0]] |= {line_list[1]}
-    if line_list[1] not in graph_dictionary.keys():
-        graph_dictionary[line_list[1]] = {line_list[0]}
+        graph_dictionary[v] |= {n}
+    if n not in graph_dictionary.keys():
+        graph_dictionary[n] = {v}
     else:
-        graph_dictionary[line_list[1]] |= {line_list[0]}
+        graph_dictionary[n] |= {v}
 
 
 def main():
@@ -187,11 +192,13 @@ def main():
     # with open('/Users/walter/contigs/data/sample.m4') as input_file:
     #     graph_dictionary =graph_dictionary_creator(input_file)
     graph = Graph(graph_dictionary)
+    l = len(graph_dictionary)
     del graph_dictionary
+    vert_dict = graph.get_vertex_dict()
     graph.compartmentalize()
     graph.write_trees_to_file()
     t2 = time.time()
-    print(t2-t1)
+    print(l, len(vert_dict), t2-t1)
 
 if __name__ == '__main__':  # ensures that the main run isn't run when this file is importet
     main()
