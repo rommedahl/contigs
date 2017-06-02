@@ -70,7 +70,6 @@ class Graph:
     def __init__(self, graph_dictionary):
         self.vertex_dictionary = {}
         self.__component_trees = []
-        self.components_dictionary = {}
         for key in graph_dictionary.keys():
             vertex = Vertex(key)
             self.vertex_dictionary[key] = vertex
@@ -97,8 +96,8 @@ class Graph:
 
     def write_trees_to_file(self):
         size = str(len(self.__component_trees))
-        filename1 = 'B_partitions_'+size+'.txt'
-        filename2 = 'B_partition_info'+size+'.txt'
+        filename1 = 'Partitions_'+size+'.txt'
+        filename2 = 'Partition_info'+size+'.txt'
         file1 = open(filename1, 'w')
         file2 = open(filename2, 'w')
         sizes = []
@@ -173,12 +172,12 @@ def line_list_to_dict(line_list, graph_dictionary):
 
 
 def main():
+    t1 = time.time()
     argument_list = sys.argv
     lines = None
     for argument in argument_list:
         if argument[:6] == 'lines=':
             lines = int(argument[6:])
-    t1 = time.time()
     try:
         with sys.stdin as file:
             graph_dictionary = graph_dictionary_creator(file, lines)
