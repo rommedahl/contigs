@@ -97,7 +97,7 @@ class Graph:
     def write_trees_to_file(self):
         size = str(len(self.__component_trees))
         filename1 = 'Partitions_'+size+'.txt'
-        filename2 = 'Partition_info'+size+'.txt'
+        filename2 = 'Partition_info_'+size+'.txt'
         file1 = open(filename1, 'w')
         file2 = open(filename2, 'w')
         sizes = []
