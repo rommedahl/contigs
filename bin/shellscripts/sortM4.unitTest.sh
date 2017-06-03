@@ -1,6 +1,4 @@
 #!/bin/bash
-## file: tests.sh
-
 ## https://github.com/kward/shunit2
 ## http://manpages.ubuntu.com/manpages/trusty/man1/shunit2.1.html
 ## http://www.mikewright.me/shunit2-bash-testing.html

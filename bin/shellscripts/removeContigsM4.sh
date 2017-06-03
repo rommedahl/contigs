@@ -1,8 +1,6 @@
 #!/bin/bash
-## Remove overlaps when one contig is in a list.
-## Input: #1 List of contigs to remove #2 .m4
-## Output: .m4
-# remoteContigsM4.sh CONTIGLIST M4FILE
-#
-grep -vwf $1 $2
-
+# Keep rows in .m4 input when both contigs in overlap are not in contig list.
+# removeContigsM4.sh contigList input.m4 > output.m4
+join -1 1 -2 2 -v2 -t '	' <(sort $1 -u) <( sort -k2 <(
+	join -1 1 -2 2 -v2 -t '	' <(sort $1 -u) <(sort -k2 $2)
+))

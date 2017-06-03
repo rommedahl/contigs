@@ -1,5 +1,5 @@
 #!/bin/bash
-## Input:  ContigData (output from catContigsM4.sh), must be sorted.
-## Output: Contig Id, Overlap frequency, Length
-cut -f1,7 $1 | uniq -c | sort -nr | awk '{print $2"	"$1"	"$3}'
+# Summarises contig frequency and also returns contig length.
+# contigOverlapFrequencyLength.sh contigData(sorted) > contigOverlapFrequency
+cut -f1,7 $1 | uniq -c | awk 'BEGIN {OFS="\t"} {print $2,$1,$3}'
 
