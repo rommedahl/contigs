@@ -97,6 +97,7 @@ class Graph:
                 bfs_tree = self.__breadth_first_search(vertex)
                 self.__component_trees += [bfs_tree]
 
+
     def write_trees_to_file(self):
         size = str(len(self.__component_trees))
         filename1 = 'Partitions_'+size+'.txt'
