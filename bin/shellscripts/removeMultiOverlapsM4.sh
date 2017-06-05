@@ -1,8 +1,4 @@
 #!/bin/bash
-# Remove multiple overlaps with the same pair of contigs.
-# Assumes the two first fields to be sorted.
-#
-# Input:  Standard input with file or stream of .m4 format.
-# Output: Standard output
-#
+# Remove multiple overlaps with the same pair of contigs from sorted .m4 input.
+# removeMultiOverlapsM4.sh input.m4 > output.m4
 rev $1 | uniq -u -f 10 | rev

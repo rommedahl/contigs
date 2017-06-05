@@ -7,13 +7,14 @@
 setUp(){
 	#originalPath=$PATH
 	#PATH=$PWD:$PATH
-	input="D	C	S	F	0	d1	d2	d3	R	c1	c2	c2
-A	B	S	F	0	a1	a2	a3	R	b1	b2	b3
-B	A	S	F	0	b1	b2	b3	R	a1	a2	a3"
+	input="A	4
+B	3
+C	2
+D	1"
 	echo "$input" > input.test
 
-	expected="A	B	S	F	0	a1	a2	a3	R	b1	b2	b3
-C	D	S	F	0	c1	c2	c2	R	d1	d2	d3"
+	expected="A
+D"
 	echo "$expected" > expected.test
 }
 
@@ -26,19 +27,19 @@ tearDown(){
 }
 
 testsortM4fromFile(){
-	sortM4.sh input.test > result.test
+	contigsOutsideBound.sh -l 2 -u 3 input.test > result.test
 	diff expected.test result.test
 	assertTrue 'Expected output differs.' $?
 }
 
 testsortM4fromRedirection(){
-	sortM4.sh < input.test > result.test
+	contigsOutsideBound.sh -l 2 -u 3 < input.test > result.test
 	diff expected.test result.test
 	assertTrue 'Expected output differs.' $?
 }
 
 testsortM4fromPipe(){
-	cat input.test | sortM4.sh > result.test
+	cat input.test | contigsOutsideBound.sh -l 2 -u 3 > result.test
 	diff expected.test result.test
 	assertTrue 'Expected output differs.' $?
 }

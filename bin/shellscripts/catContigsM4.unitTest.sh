@@ -12,8 +12,12 @@ A	B	S	F	0	a1	a2	a3	R	b1	b2	b3
 B	A	S	F	0	b1	b2	b3	R	a1	a2	a3"
 	echo "$input" > input.test
 
-	expected="A	B	S	F	0	a1	a2	a3	R	b1	b2	b3
-C	D	S	F	0	c1	c2	c2	R	d1	d2	d3"
+	expected="D	S	F	0	d1	d2	d3	R
+C	S	F	0	c1	c2	c2	R
+A	S	F	0	a1	a2	a3	R
+B	S	F	0	b1	b2	b3	R
+B	S	F	0	b1	b2	b3	R
+A	S	F	0	a1	a2	a3	R"
 	echo "$expected" > expected.test
 }
 
@@ -26,19 +30,19 @@ tearDown(){
 }
 
 testsortM4fromFile(){
-	sortM4.sh input.test > result.test
+	catContigsM4.sh input.test > result.test
 	diff expected.test result.test
 	assertTrue 'Expected output differs.' $?
 }
 
 testsortM4fromRedirection(){
-	sortM4.sh < input.test > result.test
+	catContigsM4.sh < input.test > result.test
 	diff expected.test result.test
 	assertTrue 'Expected output differs.' $?
 }
 
 testsortM4fromPipe(){
-	cat input.test | sortM4.sh > result.test
+	cat input.test | catContigsM4.sh > result.test
 	diff expected.test result.test
 	assertTrue 'Expected output differs.' $?
 }
