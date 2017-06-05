@@ -3,15 +3,15 @@
 # User input ###################################################################
 
 # Enter path to .m4 input data
-m4File=data/orginalTestMain
+m4File=data/sample.m4
 
 # Sorting - Removes duplicate overlaps.
 ##1 = yes (recommended), 0 = no
-m4sorting=1
+m4sorting=0
 
 # Max and min number of overlaps for each contig. Max = 0 > no restriction.
-contigMaxOverlapFrequency=20
-contigMinOverlapFrequency=1
+contigMaxOverlapFrequency=0
+contigMinOverlapFrequency=0
 
 # Max and min overlap ratio for each contig.  Max = 0 > no restriction.
 contigMaxOverlapRatio=0
@@ -29,7 +29,7 @@ keepCondorcetSuperContigs=0
 echo "Script is running"
 start=`date +%s`
 
-#PATH=$PATH:/bin:/bin/shellscripts # Add path to script folders
+PATH=$PATH:bin:bin/shellscripts # Add path to script folders
 
 m4Input="${m4File}"	# Sets the input pointer to be the data file.
 m4InputBase="${m4File%.m4}"
