@@ -100,9 +100,7 @@ class Graph:
     def write_trees_to_file(self):
         size = str(len(self.__component_trees))
         filename1 = 'Partitions_'+size+'.txt'
-        filename2 = 'Partition_info_'+size+'.txt'
         file1 = open(filename1, 'w')
-        file2 = open(filename2, 'w')
         sizes = []
         for tree in self.__component_trees:
             size = tree.get_size()
@@ -112,14 +110,10 @@ class Graph:
                 key = branch.get_vertex().get_key()
                 keys.append(key)
             file1.write(str(size)+'\n')
-            file2.write(str(size) + '\n')
             for key in keys:
                 file1.write(key+'\n')
             file1.write('\n')
-        median = str(stat.median(sizes))
-        file2.write('Median size of partition: '+median+'\n')
         file1.close()
-        file2.close()
 
     @classmethod
     def __breadth_first_search(cls, source_vertex):
@@ -188,17 +182,12 @@ def main():
             graph_dictionary = graph_dictionary_creator(file, lines)
     except:
         raise  # except: raise pattern raises whatever error occurs
-    # with open('/Users/walter/web-Stanford.txt') as input_file:
-    #     graph_dictionary =graph_dictionary_creator(input_file)
     graph = Graph(graph_dictionary)
-    l = len(graph_dictionary)
     del graph_dictionary
-    vert_dict = graph.get_vertex_dict()
     graph.compartmentalize()
     graph.write_trees_to_file()
     t2 = time.time()
-    print(l, len(vert_dict), t2-t1)
+    print(t2-t1)
 
 if __name__ == '__main__':  # ensures that the main run isn't run when this file is imported
     main()
-
